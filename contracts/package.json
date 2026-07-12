@@ -1,0 +1,16 @@
+{
+  "name": "hackathon-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy:celo": "node scripts/deploy.mjs celo",
+    "deploy:sepolia": "node scripts/deploy.mjs celoSepolia"
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.0",
+    "@openzeppelin/contracts": "^5.1.0",
+    "@celo/attribution-tags": "^0.3.0",
+    "viem": "^2.21.0"
+  }
+}

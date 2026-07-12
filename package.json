@@ -1,0 +1,16 @@
+{
+  "name": "celo-agent-hackathon",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Padi + Oga — youth-first agentic payment apps on Celo/MiniPay for the Agentic Payments & DeFAI Hackathon",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:padi": "npm run dev --workspace apps/padi",
+    "dev:oga": "npm run dev --workspace apps/oga",
+    "build": "npm run build --workspaces --if-present",
+    "test:contracts": "npm test --prefix contracts"
+  }
+}
