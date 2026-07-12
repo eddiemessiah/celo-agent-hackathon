@@ -7,6 +7,13 @@
   --muted: #9fb8a8;
   --lemon: #fcff52; /* Celo yellow */
   --lemon-ink: #11140a;
+
+  /* game-kit theme hooks */
+  --gk-accent: #fcff52;
+  --gk-accent-ink: #11140a;
+  --gk-panel: #14241a;
+  --gk-line: #2c4a37;
+  --gk-muted: #9fb8a8;
 }
 
 * {
@@ -181,4 +188,81 @@ textarea::placeholder {
   color: #ff9d9d;
   font-size: 13px;
   text-align: center;
+}
+
+/* ---- game layer ---- */
+.tray-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--chalk);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.section-h {
+  font-family: var(--font-display), sans-serif;
+  font-size: 15px;
+  color: var(--chalk);
+  margin-top: 4px;
+}
+
+.constellation {
+  width: 100%;
+  height: auto;
+  background: var(--board);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 6px;
+}
+.constellation .node {
+  fill: var(--muted);
+}
+.constellation .node.lit {
+  fill: var(--lemon);
+  filter: drop-shadow(0 0 4px rgba(252, 255, 82, 0.7));
+}
+.constellation .node-label {
+  fill: var(--muted);
+  font-size: 9px;
+  text-anchor: middle;
+  font-family: var(--font-body), sans-serif;
+}
+
+.hook {
+  font-size: 13px;
+  color: var(--lemon);
+  text-align: center;
+  font-style: italic;
+}
+
+/* chalk being written onto the board, then it settles */
+.chalk-in {
+  animation: chalk-write 620ms ease-out both;
+}
+@keyframes chalk-write {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+.cta.ghost {
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chalk-in {
+    animation: none;
+  }
 }

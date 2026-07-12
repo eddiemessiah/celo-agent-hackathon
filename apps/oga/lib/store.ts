@@ -1,66 +1,75 @@
-// Gig store. In-memory MVP: run Oga as a single long-lived instance
-// (`next start` on a VM/Railway, or dev+ngrok for the livestream). Swap for
-// KV/Supabase when scaling out. Tasks expire unpaid after 30 minutes.
+// Gig identity is a stateless signed token (see token.ts) so create → pay →
+// deliver works across Vercel lambdas with no shared state. A soft in-memory
+// cache of delivered gigs powers the homepage "recent work" + Oga's level; it
+// is best-effort and may reset on cold start (the onchain GigReceipts count is
+// the real source of truth for the agent's level).
 
-import { randomUUID } from "node:crypto";
-import type { GigKind } from "./gigs";
+import { encodeGig, decodeGig, type GigSpec } from "./token";
+import { GIG_MENU, type GigKind } from "./gigs";
 
-export interface Gig {
-  id: string;
-  kind: GigKind;
-  input: string;
-  priceUsd: string;
-  naira: string;
+export interface Gig extends GigSpec {
+  id: string; // the token itself
   status: "pending" | "delivered";
-  createdAt: number;
   deliverable?: string;
   payer?: string;
   tx?: string;
-  source:
-    | { type: "telegram"; chatId: number; username?: string }
-    | { type: "x"; tweetId: string; author: string }
-    | { type: "web" };
 }
 
-const gigs = new Map<string, Gig>();
-const EXPIRY_MS = 30 * 60 * 1000;
-
-export function createGig(
-  gig: Omit<Gig, "id" | "status" | "createdAt">,
-): Gig {
-  const full: Gig = {
-    ...gig,
-    id: randomUUID().slice(0, 8),
-    status: "pending",
-    createdAt: Date.now(),
-  };
-  gigs.set(full.id, full);
-  return full;
+export function createGig(spec: Omit<GigSpec, "ts">): Gig {
+  const full: GigSpec = { ...spec, ts: Date.now() };
+  const id = encodeGig(full);
+  return { ...full, id, status: "pending" };
 }
 
-export function getGig(id: string): Gig | undefined {
-  const gig = gigs.get(id);
-  if (!gig) return undefined;
-  if (gig.status === "pending" && Date.now() - gig.createdAt > EXPIRY_MS) {
-    gigs.delete(id);
-    return undefined;
-  }
-  return gig;
+export function getGig(token: string): Gig | undefined {
+  const spec = decodeGig(token);
+  if (!spec) return undefined;
+  const cached = delivered.get(token);
+  return cached ?? { ...spec, id: token, status: "pending" };
 }
+
+// soft cache — homepage + level only
+const delivered = new Map<string, Gig>();
+let deliveredCount = 0;
 
 export function deliverGig(
-  id: string,
+  token: string,
   fields: { deliverable: string; payer?: string; tx?: string },
 ): Gig | undefined {
-  const gig = gigs.get(id);
-  if (!gig) return undefined;
-  Object.assign(gig, fields, { status: "delivered" as const });
+  const spec = decodeGig(token);
+  if (!spec) return undefined;
+  if (delivered.has(token)) return delivered.get(token);
+  const gig: Gig = { ...spec, id: token, status: "delivered", ...fields };
+  delivered.set(token, gig);
+  deliveredCount += 1;
   return gig;
 }
 
-export function recentDelivered(limit = 10): Gig[] {
-  return [...gigs.values()]
-    .filter((g) => g.status === "delivered")
-    .sort((a, b) => b.createdAt - a.createdAt)
+export function recentDelivered(limit = 5): Gig[] {
+  return [...delivered.values()]
+    .sort((a, b) => b.ts - a.ts)
     .slice(0, limit);
+}
+
+/**
+ * Oga's public level = onchain GigReceipts count. Falls back to the soft
+ * in-memory count when the chain read isn't wired yet. Set via setOgaGigCount.
+ */
+let ogaGigCount = 0;
+export function setOgaGigCount(n: number): void {
+  ogaGigCount = n;
+}
+export function ogaLevel() {
+  const gigs = Math.max(ogaGigCount, deliveredCount);
+  const tier =
+    gigs >= 1500 ? "Naija GOAT"
+    : gigs >= 500 ? "Lagos Legend"
+    : gigs >= 100 ? "Timeline Boss"
+    : gigs >= 25 ? "Street Certified"
+    : "Hustler";
+  return { gigs, level: Math.floor(gigs / 10), tier };
+}
+
+export function gigLabel(kind: GigKind): string {
+  return GIG_MENU[kind].label;
 }

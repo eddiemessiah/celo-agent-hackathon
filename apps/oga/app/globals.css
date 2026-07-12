@@ -6,6 +6,13 @@
   --muted: #b8a68e;
   --hot: #ff8a00; /* agbada orange */
   --hot-ink: #1c1206;
+
+  /* game-kit theme hooks */
+  --gk-accent: #ff8a00;
+  --gk-accent-ink: #1c1206;
+  --gk-panel: #241a11;
+  --gk-line: #46331f;
+  --gk-muted: #b8a68e;
 }
 
 * {
@@ -149,4 +156,286 @@ h1 {
 .receipt a {
   color: var(--hot);
   text-decoration: none;
+}
+
+/* ---- arcade game layer ---- */
+.oga-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tray-btn {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.section-h {
+  font-family: var(--font-display), sans-serif;
+  font-size: 14px;
+  color: var(--cream);
+  margin-top: 4px;
+}
+
+/* Oga's own onchain level */
+.oga-level {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #2a1a0d, #3a2410);
+  border: 1px solid var(--hot);
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+.oga-face {
+  font-size: 32px;
+  filter: drop-shadow(0 0 8px rgba(255, 138, 0, 0.6));
+}
+.oga-level b {
+  font-family: var(--font-display), sans-serif;
+  font-size: 16px;
+}
+.oga-tier {
+  font-size: 12px;
+  color: var(--hot);
+}
+.oga-gigs {
+  margin-left: auto;
+  text-align: right;
+  font-family: var(--font-display), sans-serif;
+  font-size: 22px;
+  color: var(--cream);
+  line-height: 1;
+}
+.oga-gigs small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  font-family: var(--font-body), sans-serif;
+}
+
+/* arcade gig menu */
+.arcade {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.cab {
+  position: relative;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: var(--panel);
+  color: var(--cream);
+  font-family: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 120ms ease, box-shadow 200ms ease;
+}
+.cab b {
+  display: block;
+  margin: 6px 0 3px;
+  font-size: 14px;
+}
+.cab small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.cab-price {
+  font-family: var(--font-display), sans-serif;
+  font-size: 13px;
+  color: var(--hot);
+}
+.cab.rare {
+  border-color: #4aa3ff55;
+}
+.cab.epic {
+  border-color: #b26bff77;
+}
+.cab.on,
+.cab:active {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px var(--hot), 0 6px 20px rgba(255, 138, 0, 0.25);
+}
+@media (hover: hover) {
+  .cab:hover {
+    box-shadow: 0 0 18px rgba(255, 138, 0, 0.25);
+  }
+}
+
+.compose {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+}
+.compose textarea {
+  width: 100%;
+  min-height: 70px;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: vertical;
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.compose textarea::placeholder {
+  color: var(--muted);
+}
+
+/* combo banner */
+.combo-banner {
+  text-align: center;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  color: var(--hot-ink);
+  background: var(--hot);
+  border-radius: 12px;
+  padding: 8px;
+  animation: combo-in 320ms cubic-bezier(0.2, 0.9, 0.3, 1.5);
+}
+@keyframes combo-in {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* holographic receipt card */
+.holo {
+  perspective: 1000px;
+  min-height: 220px;
+}
+.holo-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 620ms cubic-bezier(0.3, 0.9, 0.3, 1.2);
+  min-height: 220px;
+}
+.holo.flipped .holo-inner {
+  transform: rotateY(180deg);
+}
+.holo-front,
+.holo-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid var(--hot);
+  background:
+    linear-gradient(135deg, rgba(255, 138, 0, 0.12), transparent 60%),
+    var(--panel);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+.holo-front::before,
+.holo-back::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.14) 48%, transparent 60%);
+  transform: translateX(-120%);
+}
+.holo.done .holo-back::before {
+  animation: shine 900ms ease 300ms;
+}
+@keyframes shine {
+  to {
+    transform: translateX(120%);
+  }
+}
+.holo-back {
+  transform: rotateY(180deg);
+}
+.holo-kind {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--hot);
+}
+.holo-task {
+  font-size: 15px;
+  line-height: 1.5;
+}
+.holo-deliverable {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-y: auto;
+}
+.holo-price {
+  margin-top: auto;
+  font-family: var(--font-display), sans-serif;
+  font-size: 22px;
+}
+.cooking {
+  margin-top: auto;
+  color: var(--hot);
+  font-size: 13px;
+}
+.onchain-stamp {
+  align-self: flex-start;
+  border: 2px solid #3ddc84;
+  color: #3ddc84;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  transform: rotate(-6deg);
+  animation: stamp 300ms cubic-bezier(0.2, 1.4, 0.4, 1) 700ms both;
+}
+@keyframes stamp {
+  from {
+    transform: rotate(-6deg) scale(2.4);
+    opacity: 0;
+  }
+}
+
+.recent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.recent-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: var(--panel);
+}
+.recent-kind {
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--hot);
+}
+.recent-card p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-inner {
+    transition: none;
+  }
+  .combo-banner,
+  .onchain-stamp,
+  .holo.done .holo-back::before {
+    animation: none;
+  }
 }

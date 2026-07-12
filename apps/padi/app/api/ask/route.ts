@@ -30,7 +30,11 @@ export async function POST(req: NextRequest) {
   if (wallet && hasFreeQuestion(wallet)) {
     consumeFreeQuestion(wallet);
     const result = await askTutor(question);
-    return NextResponse.json({ ...result, paid: false, asks: recordAsk(wallet) });
+    return NextResponse.json({
+      ...result,
+      paid: false,
+      asks: recordAsk(wallet, campus?.toLowerCase() || "general"),
+    });
   }
 
   if (!PAYTO) {
@@ -64,7 +68,12 @@ export async function POST(req: NextRequest) {
   if (payer) queueAsk(payer, campus?.toLowerCase() || "general");
 
   return NextResponse.json(
-    { ...result, paid: true, tx: settled.transaction, asks: wallet ? recordAsk(wallet) : undefined },
+    {
+      ...result,
+      paid: true,
+      tx: settled.transaction,
+      asks: wallet ? recordAsk(wallet, campus?.toLowerCase() || "general") : undefined,
+    },
     {
       headers: {
         "X-PAYMENT-RESPONSE": settlementResponseHeader(settled),

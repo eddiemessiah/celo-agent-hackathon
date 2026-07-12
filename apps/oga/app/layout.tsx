@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Unbounded, Outfit } from "next/font/google";
+import "@hack/game-kit/gk.css";
 import "./globals.css";
 
 const display = Unbounded({ subsets: ["latin"], variable: "--font-display" });

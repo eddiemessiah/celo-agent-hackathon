@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Space_Grotesk } from "next/font/google";
+import "@hack/game-kit/gk.css";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({
