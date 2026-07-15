@@ -10,3 +10,6 @@ contracts/typechain-types/
 .vercel
 *.tsbuildinfo
 .DS_Store
+
+.vercel
+.env*
