@@ -1,0 +1,249 @@
+:root {
+  --ink: #0d0f0d;
+  --panel: #161a16;
+  --line: #2a322a;
+  --text: #f2f5ef;
+  --muted: #9aa79a;
+  --accent: #fcff52; /* Celo lemon — hub default */
+  --accent-ink: #11140a;
+}
+
+.theme-padi {
+  --panel: #14241a;
+  --line: #2c4a37;
+  --accent: #fcff52;
+  --accent-ink: #11140a;
+}
+.theme-oga {
+  --panel: #241a11;
+  --line: #46331f;
+  --accent: #ff8a00;
+  --accent-ink: #1c1206;
+}
+.theme-ajoye {
+  --panel: #102224;
+  --line: #234a4e;
+  --accent: #3ddcc9;
+  --accent-ink: #06201d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-body), system-ui, sans-serif;
+  min-height: 100dvh;
+}
+
+a {
+  color: inherit;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 18px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.topbar a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.topbar .logo {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.hero h1 {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(30px, 7vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -1px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.hero .sub {
+  margin-top: 12px;
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.hero .pidgin {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--accent);
+  font-style: italic;
+}
+
+.cta-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-block;
+  border-radius: 12px;
+  padding: 13px 20px;
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.chip {
+  font-size: 11px;
+  letter-spacing: 0.4px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 4px 11px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.card {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  text-decoration: none;
+  transition: transform 120ms ease, border-color 120ms ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.card .k {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.card h3 {
+  font-family: var(--font-display), sans-serif;
+  font-size: 22px;
+  margin: 6px 0 4px;
+}
+.card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.card .go {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+}
+.section h2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+.section p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  counter-reset: step;
+}
+.step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.step .n {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  font-size: 13px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display), sans-serif;
+}
+.step b {
+  display: block;
+  font-size: 14px;
+}
+.step span {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.footer {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.7;
+}
+.footer a {
+  color: var(--accent);
+}
+
+.notice {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card:hover {
+    transition: none;
+    transform: none;
+  }
+}
